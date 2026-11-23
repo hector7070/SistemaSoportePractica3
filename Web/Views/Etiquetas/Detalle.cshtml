@@ -1,0 +1,32 @@
+@model EtiquetaVm
+@{
+    ViewData["Title"] = $"Etiqueta: {Model.Nombre}";
+}
+
+<a asp-action="Index" class="btn btn-sm btn-outline-secondary mb-3">Volver a la lista</a>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h1 class="h4 mb-0">@Model.Nombre</h1>
+            <partial name="_InsigniaColor" model="Model" />
+        </div>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Identificador (Id)</dt>
+            <dd class="col-sm-9">@Model.Id</dd>
+
+            <dt class="col-sm-3">Nombre</dt>
+            <dd class="col-sm-9">@Model.Nombre</dd>
+
+            <dt class="col-sm-3">Código hexadecimal</dt>
+            <dd class="col-sm-9"><code>@Model.Color</code></dd>
+
+            <dt class="col-sm-3">Vista previa</dt>
+            <dd class="col-sm-9">
+                <span class="d-inline-block border rounded me-2" style="width: 24px; height: 24px; background-color: @Model.Color; vertical-align: middle;"></span>
+                <partial name="_InsigniaColor" model="Model" />
+            </dd>
+        </dl>
+    </div>
+</div>
