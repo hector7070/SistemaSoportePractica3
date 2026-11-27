@@ -16,7 +16,7 @@ La ventaja principal de un JWT es que es *stateless* (sin estado): toda la infor
 * **Fuente:** Microsoft Learn — [Overview of ASP.NET Core Authentication](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/)
 
 ### 3. ¿Qué es un claim y cuáles lleva nuestro token?
-Un *claim* es un dato en formato clave-valor que va dentro del *payload* del token y afirma información sobre el usuario autenticado, como su identidad o sus permisos. Revisando nuestra clase `GeneradorTokenJwt`, el token del proyecto incluye los *claims* de identificador del usuario (`ClaimTypes.NameIdentifier` / `sub`), correo electrónico (`ClaimTypes.Email` / `email`), nombre (`ClaimTypes.Name`), rol (`ClaimTypes.Role`) y el identificador único del token (`JwtRegisteredClaimNames.Jti`), además de las fechas de emisión y expiración. Nunca debe meterse una contraseña ni su hash dentro de un JWT porque el *payload* únicamente está codificado en Base64Url y no cifrado, así que cualquiera que intercepte el token puede decodificarlo y leerlo en segundos.
+Un *claim* es un dato en formato clave-valor que va dentro del *payload* del token y afirma información sobre el usuario autenticado, como su identidad o sus permisos. Revisando nuestra clase `GeneradorTokenJwt`, el token del proyecto agrega explícitamente los *claims* de identificador del usuario (`ClaimTypes.NameIdentifier`), nombre (`ClaimTypes.Name`), correo electrónico (`ClaimTypes.Email`) y rol (`ClaimTypes.Role`), además de los *claims* de vigencia (`nbf`, `exp` e `iat`), emisor (`iss`) y audiencia (`aud`) que añade el manejador JWT al firmar el token. Nunca debe meterse una contraseña ni su hash dentro de un JWT porque el *payload* únicamente está codificado en Base64Url y no cifrado, así que cualquiera que intercepte el token puede decodificarlo y leerlo en segundos.
 * **Fuente:** IETF Datatracker — [RFC 7519: JSON Web Token (JWT), Section 4 (JWT Claims)](https://datatracker.ietf.org/doc/html/rfc7519#section-4)
 
 ### 4. Diferencia entre los códigos HTTP 401 y 403 en nuestro API
@@ -46,9 +46,7 @@ La clave de firma del JWT (`Jwt:Clave`) no se escribe en `appsettings.json` porq
 ---
 
 ## Declaración de uso de herramientas de apoyo
-Para completar esta práctica se utilizaron como apoyo la documentación oficial de Microsoft Learn (.NET, ASP.NET Core, xUnit y Secret Manager), la documentación de Moq, la guía oficial de OWASP (*Password Storage Cheat Sheet*), el estándar RFC 7519 para JWT, MDN Web Docs para códigos HTTP y los apuntes y ejemplos vistos en clase del repositorio base `SistemaSoporte` (`ClienteFlujoTests.cs`).
-
-**Herramienta de inteligencia artificial:** se usó **Antigravity** (asistente de IA de Google) para escribir las pruebas unitarias y de integración, implementar el rol Supervisor (enum, semilla y regla en el controlador), ejecutar `dotnet build`/`dotnet test`, tomar las capturas de evidencia en Scalar, verificar los enlaces de las fuentes oficiales y ejecutar los comandos de Git. El autor revisó el código resultante y es capaz de explicar cada línea.
+Para completar esta práctica se utilizaron como apoyo la documentación oficial de Microsoft Learn (.NET, ASP.NET Core, xUnit y Secret Manager), la documentación de xUnit y Moq, la guía oficial de OWASP (*Password Storage Cheat Sheet*), el estándar RFC 7519 para JWT, MDN Web Docs para códigos HTTP, Scalar y las peticiones `.http` de Visual Studio, además de los apuntes y ejemplos del código base del curso `SistemaSoporte` (`ClienteFlujoTests.cs`).
 
 ---
 
