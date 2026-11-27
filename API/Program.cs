@@ -147,3 +147,7 @@ app.MapTicketsMinimal();
 app.MapEtiquetas();
 
 app.Run();
+
+// Expone Program a las pruebas de integración (WebApplicationFactory<Program>): con instrucciones de
+// nivel superior el compilador genera Program como internal, y el proyecto de pruebas no podría verlo.
+public partial class Program { }

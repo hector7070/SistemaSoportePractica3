@@ -39,3 +39,9 @@ La clave de firma del JWT (`Jwt:Clave`) no se escribe en `appsettings.json` porq
 
 ## Declaración de uso de herramientas de apoyo
 Para completar esta práctica se utilizaron como apoyo la documentación oficial de Microsoft Learn (.NET, ASP.NET Core, xUnit y Secret Manager), la documentación de Moq, la guía oficial de OWASP (*Password Storage Cheat Sheet*), el estándar RFC 7519 para JWT, MDN Web Docs para códigos HTTP y los apuntes y ejemplos vistos en clase del repositorio base `SistemaSoporte` (`ClienteFlujoTests.cs`).
+
+---
+
+## Parte Opcional: Pruebas de integración
+Investigué que `WebApplicationFactory<Program>` arranca el API completo en memoria y permite hacerle peticiones HTTP reales con un `HttpClient`, sin abrir puertos ni usar la red. Para que pudiera encontrar la aplicación tuve que exponer la clase con `public partial class Program { }` al final de `API/Program.cs`, porque con instrucciones de nivel superior queda como `internal`. Otro ajuste fue que `Program.cs` lee la configuración al arrancar, así que la clave JWT de prueba se inyecta con `UseSetting` en una fábrica personalizada (`FabricaApiPrueba`) y se usa el entorno `Testing` para no cargar los user-secrets reales. Para no depender de SQL Server, la fábrica desactiva la migración al iniciar y reemplaza `IUsuarioDA` por un doble en memoria sin usuarios, de modo que el login con credenciales incorrectas devuelve 401 con `application/problem+json` y la ruta protegida sin token también devuelve 401.
+* **Fuente:** Microsoft Learn — [Integration tests in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests)
