@@ -42,10 +42,13 @@ La clave de firma del JWT (`Jwt:Clave`) no se escribe en `appsettings.json` porq
 
 4. **Petición `PUT /api/clientes/1` con token de `Admin` (Respuesta: `204 No Content`):**
    ![PUT cliente con Admin 204](docs/evidencia/04-put-cliente-admin-204.png)
+
 ---
 
 ## Declaración de uso de herramientas de apoyo
 Para completar esta práctica se utilizaron como apoyo la documentación oficial de Microsoft Learn (.NET, ASP.NET Core, xUnit y Secret Manager), la documentación de Moq, la guía oficial de OWASP (*Password Storage Cheat Sheet*), el estándar RFC 7519 para JWT, MDN Web Docs para códigos HTTP y los apuntes y ejemplos vistos en clase del repositorio base `SistemaSoporte` (`ClienteFlujoTests.cs`).
+
+**Herramienta de inteligencia artificial:** se usó **Antigravity** (asistente de IA de Google) para escribir las pruebas unitarias y de integración, implementar el rol Supervisor (enum, semilla y regla en el controlador), ejecutar `dotnet build`/`dotnet test`, tomar las capturas de evidencia en Scalar, verificar los enlaces de las fuentes oficiales y ejecutar los comandos de Git. El autor revisó el código resultante y es capaz de explicar cada línea.
 
 ---
 

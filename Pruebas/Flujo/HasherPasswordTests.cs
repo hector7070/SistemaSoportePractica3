@@ -1,11 +1,11 @@
-using Abstracciones.Seguridad;
+﻿using Abstracciones.Seguridad;
 
 namespace Pruebas;
 
 /// <summary>
-/// Pruebas unitarias de HasherPassword. Es una función pura (sin DA, sin base de datos, sin red),
+/// Pruebas unitarias de HasherPassword. Es una funciÃ³n pura (sin DA, sin base de datos, sin red),
 /// por eso no se necesita Moq.
-/// Patrón de cada prueba: Arrange (preparar) / Act (ejecutar) / Assert (verificar).
+/// PatrÃ³n de cada prueba: Arrange (preparar) / Act (ejecutar) / Assert (verificar).
 /// </summary>
 public class HasherPasswordTests
 {
@@ -13,7 +13,7 @@ public class HasherPasswordTests
     public void Hashear_NoDevuelveLaContrasenaEnTextoPlano()
     {
         // Arrange
-        const string password = "Soporte2026!";
+        const string password = "ClaveDePrueba123!";
 
         // Act
         var hash = HasherPassword.Hashear(password);
@@ -27,14 +27,14 @@ public class HasherPasswordTests
     public void Hashear_ConLaMismaContrasena_GeneraHashesDistintos()
     {
         // Arrange
-        const string password = "Soporte2026!";
+        const string password = "ClaveDePrueba123!";
 
         // Act
         var hash1 = HasherPassword.Hashear(password);
         var hash2 = HasherPassword.Hashear(password);
 
         // Assert
-        // Cada llamada genera una sal aleatoria distinta, así que el resultado cambia aunque la contraseña sea igual.
+        // Cada llamada genera una sal aleatoria distinta, asÃ­ que el resultado cambia aunque la contraseÃ±a sea igual.
         Assert.NotEqual(hash1, hash2);
     }
 
