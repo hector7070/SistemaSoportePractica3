@@ -30,11 +30,18 @@ La clave de firma del JWT (`Jwt:Clave`) no se escribe en `appsettings.json` porq
 ---
 
 ## Evidencias de la Parte B (`docs/evidencia/`)
-1. `docs/evidencia/01-put-cliente-sin-token-401.png` — Petición `PUT /api/clientes/1` sin token (Respuesta: `401 Unauthorized`).
-2. `docs/evidencia/02-put-cliente-agente-403.png` — Petición `PUT /api/clientes/1` con token de `Agente` (Respuesta: `403 Forbidden`).
-3. `docs/evidencia/03-put-cliente-supervisor-204.png` — Petición `PUT /api/clientes/1` con token de `Supervisor` (Respuesta: `204 No Content`).
-4. `docs/evidencia/04-put-cliente-admin-204.png` — Petición `PUT /api/clientes/1` con token de `Admin` (Respuesta: `204 No Content`).
 
+1. **Petición `PUT /api/clientes/1` sin token (Respuesta: `401 Unauthorized`):**
+   ![PUT cliente sin token 401](docs/evidencia/01-put-cliente-sin-token-401.png)
+
+2. **Petición `PUT /api/clientes/1` con token de `Agente` (Respuesta: `403 Forbidden`):**
+   ![PUT cliente con Agente 403](docs/evidencia/02-put-cliente-agente-403.png)
+
+3. **Petición `PUT /api/clientes/1` con token de `Supervisor` (Respuesta: `204 No Content`):**
+   ![PUT cliente con Supervisor 204](docs/evidencia/03-put-cliente-supervisor-204.png)
+
+4. **Petición `PUT /api/clientes/1` con token de `Admin` (Respuesta: `204 No Content`):**
+   ![PUT cliente con Admin 204](docs/evidencia/04-put-cliente-admin-204.png)
 ---
 
 ## Declaración de uso de herramientas de apoyo
