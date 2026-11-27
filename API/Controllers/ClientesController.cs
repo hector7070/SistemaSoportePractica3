@@ -41,9 +41,13 @@ public class ClientesController : ControllerBase
         return CreatedAtAction(nameof(Obtener), new { id = creado.Id }, creado);
     }
 
+    // Solo Admin y Supervisor pueden actualizar clientes. Sin token -> 401; Agente -> 403.
+    [Authorize(Roles = $"{nameof(RolUsuario.Admin)},{nameof(RolUsuario.Supervisor)}")]
     [HttpPut("{id:int:min(1)}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Actualizar(int id, ClienteActualizarDto dto, CancellationToken ct)

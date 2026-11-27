@@ -2,7 +2,7 @@
 namespace Abstracciones.Seguridad
 {
 
-    public enum RolUsuario { Agente, Admin }
+    public enum RolUsuario { Agente, Admin, Supervisor }
 
     public class Usuario
     {

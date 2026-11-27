@@ -121,3 +121,52 @@ Authorization: Bearer {{loginAdmin.response.body.$.token}}
 ### Borrar cliente con token de Agente: 403. Con el de Admin: 204 (o 404/409 según el cliente).
 DELETE {{host}}/api/clientes/1
 Authorization: Bearer {{loginAgente.response.body.$.token}}
+
+### ===== PRÁCTICA 4: ROL SUPERVISOR (PUT /api/clientes/{id}) =====
+### Login Admin (Práctica 4)
+# @name loginAdminP4
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "correo": "admin@soporte.local", "password": "Soporte2026!" }
+
+### Login Supervisor (Práctica 4)
+# @name loginSupervisorP4
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "correo": "supervisor@soporte.local", "password": "Soporte2026!" }
+
+### Login Agente (Práctica 4)
+# @name loginAgenteP4
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "correo": "agente@soporte.local", "password": "Soporte2026!" }
+
+### 1. PUT /api/clientes/1 sin token -> 401 Unauthorized
+PUT {{host}}/api/clientes/1
+Content-Type: application/json
+
+{ "nombre": "Ana Pérez", "correo": "ana@ejemplo.com", "telefono": "88880001", "empresa": "Café Aurora" }
+
+### 2. PUT /api/clientes/1 con token de Agente -> 403 Forbidden
+PUT {{host}}/api/clientes/1
+Authorization: Bearer {{loginAgenteP4.response.body.$.token}}
+Content-Type: application/json
+
+{ "nombre": "Ana Pérez", "correo": "ana@ejemplo.com", "telefono": "88880001", "empresa": "Café Aurora" }
+
+### 3. PUT /api/clientes/1 con token de Supervisor -> 204 No Content (o 404 si el cliente no existe)
+PUT {{host}}/api/clientes/1
+Authorization: Bearer {{loginSupervisorP4.response.body.$.token}}
+Content-Type: application/json
+
+{ "nombre": "Ana Pérez", "correo": "ana@ejemplo.com", "telefono": "88880001", "empresa": "Café Aurora" }
+
+### 4. PUT /api/clientes/1 con token de Admin -> 204 No Content (o 404 si el cliente no existe)
+PUT {{host}}/api/clientes/1
+Authorization: Bearer {{loginAdminP4.response.body.$.token}}
+Content-Type: application/json
+
+{ "nombre": "Ana Pérez", "correo": "ana@ejemplo.com", "telefono": "88880001", "empresa": "Café Aurora" }

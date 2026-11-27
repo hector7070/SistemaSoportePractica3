@@ -21,29 +21,52 @@ public class SemillaDatos
 
     public SemillaDatos(SistemaSoporteContexto ctx) => _ctx = ctx;
 
-    /// <summary>Crea un Admin y un Agente de demostración. Idempotente: si ya hay usuarios no toca nada.</summary>
+    /// <summary>Crea Admin, Supervisor y Agente de demostración. Idempotente por correo: solo agrega los que falten.</summary>
     private async Task SembrarUsuariosAsync(string? clave, CancellationToken ct)
     {
-        if (await _ctx.Usuarios.AnyAsync(ct))
+        var usuariosBase = new[]
         {
-            Console.WriteLine("La base ya tiene usuarios. No se agregó ninguno.");
+            (Correo: "admin@soporte.local", Nombre: "Administrador", Rol: RolUsuario.Admin),
+            (Correo: "supervisor@soporte.local", Nombre: "Supervisor de soporte", Rol: RolUsuario.Supervisor),
+            (Correo: "agente@soporte.local", Nombre: "Agente de soporte", Rol: RolUsuario.Agente)
+        };
+
+        var correosExistentes = await _ctx.Usuarios
+            .Select(u => u.Correo.ToLower())
+            .ToListAsync(ct);
+
+        var faltantes = usuariosBase
+            .Where(u => !correosExistentes.Contains(u.Correo))
+            .ToList();
+
+        if (faltantes.Count == 0)
+        {
+            Console.WriteLine("Todos los usuarios base ya existen. No se agregó ninguno.");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(clave) || clave.Length < 8)
         {
-            Console.WriteLine("No se crearon usuarios: falta Semilla:ClaveInicial (mínimo 8 caracteres). " +
+            Console.WriteLine("No se crearon usuarios faltantes: falta Semilla:ClaveInicial (mínimo 8 caracteres). " +
                               "Defínala con: dotnet user-secrets set \"Semilla:ClaveInicial\" \"<clave>\" --project API");
             return;
         }
 
         // Correos en minúscula: AutenticacionFlujo normaliza el correo del login con ToLowerInvariant.
-        _ctx.Usuarios.AddRange(
-            new Usuario { Correo = "admin@soporte.local", Nombre = "Administrador", ClaveHash = HasherPassword.Hashear(clave), Rol = RolUsuario.Admin },
-            new Usuario { Correo = "agente@soporte.local", Nombre = "Agente de soporte", ClaveHash = HasherPassword.Hashear(clave), Rol = RolUsuario.Agente });
+        foreach (var u in faltantes)
+        {
+            _ctx.Usuarios.Add(new Usuario
+            {
+                Correo = u.Correo,
+                Nombre = u.Nombre,
+                ClaveHash = HasherPassword.Hashear(clave),
+                Rol = u.Rol
+            });
+        }
 
         await _ctx.SaveChangesAsync(ct);
-        Console.WriteLine("Usuarios creados: admin@soporte.local (Admin) y agente@soporte.local (Agente).");
+        var creados = string.Join(", ", faltantes.Select(u => $"{u.Correo} ({u.Rol})"));
+        Console.WriteLine($"Usuarios creados: {creados}.");
     }
 
     /// <param name="confirmado">true si se pasó --yes (no pregunta).</param>
